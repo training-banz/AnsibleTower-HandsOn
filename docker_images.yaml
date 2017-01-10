@@ -1,0 +1,33 @@
+- hosts: docker
+  vars:
+    SCRIPT_DIR: /root/DockerScripts/rhel7-ssh
+    IMAGE_NAME: rhel7-ssh
+    KEY_NAME: /root/.ssh/id_rsa
+
+  remote_user: root  
+  tasks:
+    - name: Create Docker Scripts  Directory
+      file: path={{ SCRIPT_DIR }} state=directory
+
+    - name: Copy Files for docker build
+      copy: src=./Files/DockerScripts/rhel7-ssh/{{ item }} dest={{ SCRIPT_DIR }}/{{ item }}
+      with_items:
+        - Dockerfile
+        - authorized_keys
+
+    - name: Check Exist SSH RSA Keys
+      shell: ls -al {{ KEY_NAME }}
+      register: keypair_exist
+      failed_when: keypair_exist.rc not in [0, 1]
+
+    - name: Create SSH RSA Keys
+      shell: ssh-keygen -t rsa -f {{ KEY_NAME }} -q -N ""
+      when: keypair_exist.rc == 1
+
+    - name: Add SSH RSA Keys into DockerImage
+      shell: cat  {{ KEY_NAME }}.pub >> {{ SCRIPT_DIR }}/authorized_keys
+
+    - name: Create Docker Image
+      docker_image:
+        path: "{{ SCRIPT_DIR }}"
+        name: "{{ IMAGE_NAME }}"

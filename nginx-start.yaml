@@ -1,0 +1,8 @@
+- name: start nginx
+  hosts: all
+ 
+  tasks:
+ 
+  # Example action to start service nginx, if not running
+  - service: name=nginx state=started
+

@@ -1,0 +1,8 @@
+- name: stop nginx
+  hosts: all
+ 
+  tasks:
+ 
+  # Example action to stop service nginx, if running
+  - service: name=nginx state=stopped
+

@@ -1,0 +1,15 @@
+#------------------------------------------
+# Inventory (hosts)
+#------------------------------------------
+#[ansible]
+# ansible-playbook 実行サーバ
+#
+[ansible]
+localhost
+
+#[docker]
+#  docker コマンド実行対象ホスト
+#  グループ変数ファイル：group_vars/docker へコンテナ情報の記載が必要
+#
+[docker]
+localhost

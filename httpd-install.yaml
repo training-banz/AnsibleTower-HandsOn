@@ -1,0 +1,19 @@
+- name: install httpd
+  hosts: all
+  vars:
+    HTTPD_PORT : 8080
+
+  tasks:
+ 
+  # Install httpd package
+  - name: Install packages
+    yum: name={{ item }} state=present
+    with_items:
+      - httpd
+
+  - name: Modify httpd Listen Port to 8080
+    replace: dest=/etc/httpd/conf/httpd.conf regexp='^Listen 80$' replace='Listen {{ HTTPD_PORT }}' backup=yes
+
+  - name: Modify firewalld Open 8080 port
+    firewalld: zone=public port={{ HTTPD_PORT }}/tcp permanent=false state=enabled
+

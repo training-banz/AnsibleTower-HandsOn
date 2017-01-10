@@ -1,0 +1,19 @@
+- name: install nginx
+  hosts: all
+  vars:
+    NGINX_PORT: 81
+
+  tasks:
+ 
+  # Install nginx package
+  - name: Install packages
+    yum: name={{ item }} state=present
+    with_items:
+      - nginx
+
+  - name: Modify nginx Listen Port
+    replace: dest=/etc/nginx/nginx.conf regexp='[108]+ default_server;$' replace='{{ NGINX_PORT }} default_server;' backup=yes
+
+  - name: Modify firewalld Open port
+    firewalld: zone=public port={{ NGINX_PORT }}/tcp permanent=false state=enabled
+

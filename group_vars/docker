@@ -1,0 +1,21 @@
+#------------------------------------------
+# Docker コンテナ起動時の変数 (DOCKER_ENVS)
+#------------------------------------------
+#[利用Playbook]
+#  docker_run.yml : Dockerコンテナ起動
+#  docker_rm.yml  : Dockerコンテナ停止・削除
+#
+#[注意]
+#  Ansible-Tower をご利用の場合、Job Template で設定する
+#  Extra Variables の設定が優先されます
+#
+#[変数]
+#  name    : Container Name
+#  image   : Container Image 
+#  ssh     : Portfoward Port (sshd) 
+#  http    : Portfoward Port (httpd)
+#  command : コンテナ起動時の実行コマンド 
+
+DOCKER_ENVS:
+  - { name: 'rhel701', image: 'rhel7-ssh', ssh: '10022', http: '10080', command: '/sbin/init' }
+  - { name: 'rhel702', image: 'rhel7-ssh', ssh: '20022', http: '20080', command: '/sbin/init' }
