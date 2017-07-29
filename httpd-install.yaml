@@ -12,4 +12,4 @@
       - httpd
 
   - name: Modify httpd Listen Port
-    replace: dest=/etc/httpd/conf/httpd.conf regexp='Listen 80$' replace='Listen {{ HTTPD_PORT }}' backup=yes
+    replace: dest=/etc/httpd/conf/httpd.conf regexp='Listen [0-9]+$' replace='Listen {{ HTTPD_PORT }}' backup=yes
